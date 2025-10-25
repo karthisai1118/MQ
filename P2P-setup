@@ -1,0 +1,64 @@
+Point to point setup:
+---------------------
+Sending side: (QM1, 192.168.1.1)
+---------------------------------
+1. Sending Queue manager (QM1)
+	crtmqm QM1
+	strmqm QM1
+	runmqsc QM1
+
+2. Remote Queue (QR1)
+	DEFINE QREMOTE(QR1) RNAME(QL2) RQMNAME(QM2) XMITQ(TQ1)
+
+3. Transmission Queue (XMITQ) --> TQ1
+	DEFINE QLOCAL(TQ1) USAGE(XMITQ)
+
+4. Sender channel (CHL1)
+	DEFINE CHANNEL(CHL1) CHLTYPE(SDR) CONNAME('192.168.1.2(1419)') XMITQ(TQ1) --> In real time
+	DEFINE CHANNEL(CHL1) CHLTYPE(SDR) CONNAME('localhost(1419)') XMITQ(TQ1) --> For our lab setup
+
+
+
+Receving side: (QM2, 192.168.1.2, 1419)
+-----------------------------------------
+5. Receiving Queue manager (QM2)
+	crtmqm QM2
+	strmqm QM2
+	runmqsc QM2
+
+6. Receiving Queue (QL2) (LOCAL QUEUE)
+	DEFINE QLOCAL(QL2)
+
+7. Receiver channel
+	DEFINE CHANNEL(CHL1) CHLTYPE(RCVR)
+
+8. Listener at port 1419
+	DEFINE LISTENER(LSTR2) TRPTYPE(TCP) PORT(1419)
+	START LISTENER(LSTR2)
+	DISPLAY LSSTATUS(LSTR2) ALL
+---------------------------------------------------------------------
+Final step:
+
+Start the sender channel in Sending queue manager
+			Syntax : START CHANNEL(SDR_CHANNEL_NAME)
+
+2.    Now check the status of the sender channel 
+			Syntax: DISPLAY CHS(SDR_CHANNEL_NAME)
+
+    If the status of the sender channel is in “RUNNING” state, it    confirms that the point to point setup is success. Other wise Point to Point setup is not success
+ 
+-------------------------------------------------------------------------
+Validation:
+
+PUT and GET messages in point to point setup
+
+1. Message is put in the remote queue of sending queue manager (in QM1)
+			Syntax : cd /opt/mqm/samp/bin
+                        ./amqsput QR1 QM1
+
+2.   The message is get in the local queue of receiving queue manager (in QM2) 
+			Syntax:  cd /opt/mqm/samp/bin
+				     ./amqsget QL2 QM2
+
+    Here the message has been transported from QM1 and reached to QM2 over the network via MQ channels
+============================================================================================================
