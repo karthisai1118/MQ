@@ -1,0 +1,9 @@
+Channel Triggering:
+---------------------
+1. Inactive the running sender channel
+	STOP CHANNEL(CHL1) STATUS(INACTIVE)
+	
+2. ALTER QLOCAL(TQ1) TRIGGER TRIGTYPE(FIRST) TRIGDATA(CHL1) INITQ(SYSTEM.CHANNEL.INITQ)
+3. ALTER CHL(CHL1) CHLTYPE(SDR) DISCINT(20)
+4. ALTER QLOCAL(TQ1) TRIGGER TRIGTYPE(DEPTH) TRIGDPTH(5) TRIGDATA(CHL1) INITQ(SYSTEM.CHANNEL.INITQ)
+=========================================================================================================
