@@ -1,0 +1,106 @@
+Clusters: (QM1, QM2, QM3 and QM4) --> TRAINING 
+----------------------------------
+QM1:(Full repos, 192.168.1.1, 1414)
+--------------------------------------
+1. Create QM1 as full repos
+	crtmqm QM1
+	strmqm QM1
+	runmqsc QM1
+	ALTER QMGR REPOS(TRAINING)
+	
+2. Create a cluster sender channel points to QM2 (Another full repos of TRAINING cluster)
+	DEFINE CHANNEL(TO.QM2) CHLTYPE(CLUSSDR) CONNAME('192.168.1.2(1415)') CLUSTER(TRAINING) --> in Real time
+	DEFINE CHANNEL(TO.QM2) CHLTYPE(CLUSSDR) CONNAME('localhost(1415)') CLUSTER(TRAINING) --> For our lab setup
+
+3. Create a cluster receiver channel points to itself (QM1)
+	DEFINE CHANNEL(TO.QM1) CHLTYPE(CLUSRCVR) CONNAME('192.168.1.1(1414)') CLUSTER(TRAINING) --> In Real time
+	DEFINE CHANNEL(TO.QM1) CHLTYPE(CLUSRCVR) CONNAME('localhost(1414)') CLUSTER(TRAINING) --> For our lab setup
+
+4. Create a listener at port 1414 under QMGR control
+	DEFINE LSTR(LSTR1) TRPTYPE(TCP) PORT(1414) CONTROL(QMGR)
+	START LSTR(LSTR1)
+	DIS LSSTATUS(LSTR1)
+
+QM2: (Full Repos, 192.168.1.2, 1415)
+--------------------------------------
+1. Create QM2 as full repos
+	crtmqm QM2
+	strmqm QM2
+	runmqsc QM2
+	ALTER QMGR REPOS(TRAINING)
+
+2. Create a cluster sender points to QM1 (Another full repos of TRAINING cluster)
+	DEFINE CHANNEL(TO.QM1) CHLTYPE(CLUSSDR) CONNAME('192.168.1.1(1414)') CLUSTER(TRAINING) --> In real time
+	DEFINE CHANNEL(TO.QM1) CHLTYPE(CLUSSDR) CONNAME('localhost(1414)') CLUSTER(TRAINING) --> For our lab setup
+	
+3. Create a cluster receiver channel points to it self (QM2)
+	DEFINE CHANNEL(TO.QM2) CHLTYPE(CLUSRCVR) CONNAME('192.168.1.2(1415)') CLUSTER(TRAINING) --> In real time
+	DEFINE CHANNEL(TO.QM2) CHLTYPE(CLUSRCVR) CONNAME('localhost(1415)') CLUSTER(TRAINING) --> For our lab setup
+
+4. Create a listener at port 1415 under QMGR control
+	DEF LSTR(LSTR2) TRPTYPE(TCP) PORT(1415) CONTROL(QMGR)
+	START LSTR(LSTR2)
+	DIS LSSTATUS(LSTR2)
+---------------------------------------------------------------------------------------------------
+Cluster commands:
+------------------
+1. DISPLAY CLUSQMGR(*) QMTYPE --> Display all the queue managers in the cluster
+2. DISPLAY QCLUSTER(*) --> Display all the queue clusters
+3. ALTER QLOCAL(QL4) CLUSTER(TRAINING) --> QL4 will become a member in TRAINING cluster
+4. DISPLAY CLUSQMGR(*) WHERE(DEFTYPE EQ CLUSSDRA) --> To display auto created cluster sender channels
+5. DISPLAY CLUSQMGR(*) WHERE(DEFTYPE EQ CLUSSDRB) --> To display manually created cluster sender channels
+
+
+----------------------------------------------------------------------------------------------------
+QM3: (Partial repos, 192.168.1.3, 1416)
+------------------------------------------
+1. Create QM3 
+	crtmqm QM3
+	strmqm QM3
+	runmqsc QM3
+	
+2. Create a cluster sender points to QM1 (Full repos of TRAINING)
+	DEFINE CHL(TO.QM1) CHLTYPE(CLUSSDR) CONNAME('192.168.1.1(1414)') CLUSTER(TRAINING) --> In Real time
+	DEFINE CHL(TO.QM1) CHLTYPE(CLUSSDR) CONNAME('localhost(1414)') CLUSTER(TRAINING) --> For our lab setup
+
+3. Create a cluster receiver points to itself (QM3)
+	DEFINE CHL(TO.QM3) CHLTYPE(CLUSRCVR) CONNAME('192.168.1.3(1416)') CLUSTER(TRAINING) --> In real time
+	DEFINE CHL(TO.QM3) CHLTYPE(CLUSRCVR) CONNAME('localhost(1416)') CLUSTER(TRAINING) --> For our lab setup
+
+4. Create a listener at port 1416 under QMGR control
+	DEF LSTR(LSTR3) TRPTYPE(TCP) PORT(1416) CONTROL(QMGR)
+	START LSTR(LSTR3)
+	DIS LSSTATUS(LSTR3)
+----------------------------------------------------------
+QM4: (Partial repos, 192.168.1.4, 1417)
+--------------------------------------
+1. Create QM4
+	crtmqm QM4
+	strmqm QM4
+	runmqsc QM4
+
+2. Create cluster sender points to QM2 (Full repos of TRAINING)
+	DEF CHL(TO.QM2) CHLTYPE(CLUSSDR) CONNAME('192.168.1.2(1415)') CLUSTER(TRAINING) -- In real time
+	DEF CHL(TO.QM2) CHLTYPE(CLUSSDR) CONNAME('localhost(1415)') CLUSTER(TRAINING) --> For our lab setup
+
+3. Create a cluster receiver channel points to itself (QM4)
+	DEF CHL(TO.QM4) CHLTYPE(CLUSRCVR) CONNAME('192.168.1.4(1417)') CLUSTER(TRAINING) --> In real time
+	DEF CHL(TO.QM4) CHLTYPE(CLUSRCVR) CONNAME('localhost(1417)') CLUSTER(TRAINING) --> for our lab setup
+	
+4. Create a listeners at port 1417
+	DEF LSTR(LSTR4) TRPTYPE(TCP) PORT(1417) CONTROL(QMGR)
+	START LSTR(LSTR4)
+	DIS LSSTATUS(LSTR4)
+-----------------------------------------------------------------------------------
+1) ./amqsput QL4 QM4 --> WORKING
+2) ./amqsput QL4 QM1 --> WORKING
+3) ./amqsput QL4 QM2 --> WORKING
+4) ./amqsput QL4 QM3 --> WORKING 
+-------------------------------------------------
+WorkLoad Balancing:
+-------------------
+in QM2: --> DEF QLOCAL(QL4) CLUSTER(TRAINING) 
+			ALTER QLOCAL(QL4) DEFBIND(NOTFIXED) CLWLUSEQ(ANY)
+			
+in QM4: --> ALTER QLOCAL(QL4) DEFBIND(NOTFIXED) CLWLUSEQ(ANY)
+==================================================================================================================
