@@ -1,0 +1,26 @@
+i) MQ Operating system level commands
+---------------------------------------
+1. dspmqver --> to display the MQ version in the server 
+2. dspmq --> to display the queue mangers list in the server
+3. crtmqm MOHAN --> to create a queue manager with name MOHAN
+4. strmqm MOHAN --> to start the queue manager
+	ps -ef |grep MOHAN --> to see the processes list of MOHAN
+5. runmqsc MOHAN --> to enter inside the queue manager
+6. dltmqm NAGA --> to delete a queue manager which is in ended state
+7. endmqm MOHAN --> to shutdown the queue manager
+8. mqrc 2053 --> to know the reason code of 2053 error (2053 ==> Queue Full)
+
+ii) MQ Script level commands (MQSC commands)
+-------------------------------------------------
+1. END --> to come out froom the queue manager
+2. DISPLAY QMGR --> to display the properties of the queue manager 
+3. DEFINE QLOCAL(QL1) --> to create a new local queue with name  QL1
+4. DISPLAY QLOCAL(QL1) --> to display the properties of qlocal QL1
+5. How to put messages in a local queue ?
+	cd /opt/mqm/samp/bin
+	./amqsput QL1 QM1
+	
+6. How to get messages from the local queue ?
+	cd /opt/mqm/samp/bin
+	./amqsget QL1 QM1
+=============================================================================
