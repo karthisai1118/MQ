@@ -23,3 +23,27 @@ runmqakm -cert -add -label qm2pub -file /var/mqm/qmgrs/QM2/ssl/qm2pub.arm -db /v
 To list the certs in keystore
 -----------------------------------
 runmqakm -cert -list -db /var/mqm/qmgrs/QM1/ssl/qm1key.kdb
+===============================================================================================================================
+After doing the above steps, do the below
+--------------------------------
+In QM1
+-----------
+1. ALTER QMGR SSLKEYR('/var/mqm/qmgrs/QM1/ssl/qm1key')
+2. ALTER CHL(CHL1) CHLTYPE(SDR) SSLCIPH(TLS_RSA_WITH_AES_128_CBC_SHA256)
+
+In QM2
+---------
+1. ALTER QMGR SSLKEYR('/var/mqm/qmgrs/QM2/ssl/qm2key')
+2. ALTER CHL(CHL1) CHLTYPE(RCVR) SSLCIPH(TLS_RSA_WITH_AES_128_CBC_SHA256)
+
+After this, restart the sender channel in QM1
+  STOP CHL(CHL1)
+  START CHL(CHL1)
+	(OR)
+
+REFRESH SECURITY TYPE(SSL)
+
+Now, if the channel is in running status then ssl is succeess. you can see the difference using below command
+
+DIS CHS(CHL1) ALL 
+=================================================================================================
