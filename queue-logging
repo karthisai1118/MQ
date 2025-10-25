@@ -1,0 +1,17 @@
+Transaction log files count for a queue manager:
+---------------------------------------------------
+Default --> 3 primary, 2 secondary ==> 5 files (/var/mqm/log/QMGR-NAME/active)
+Logfile pages=4096
+5*4096 ==> 20480 pages ==> 1 page is 4 KB ==> 20480*4KB ==> 81920 KB ==> 80 MB
+
+Minimum --> 2 primary, 1 secondary ==> 3 files
+
+Maximum total number of files (primary+secondary) ==> 512
+
+
+2 primary, 510 secondary ==> 512
+
+511  primary, 1 secondary ==> 512
+
+---------------------------------------------
+10 primary, 20 secondary, 8000 pages, linear logging
