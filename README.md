@@ -1,4 +1,4 @@
-# MQ
+# MQ with Detailed Explanation
 Detail description on MQ Installation, configuration and complete setup.
 
 I. what is MQ?
