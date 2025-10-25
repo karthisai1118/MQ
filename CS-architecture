@@ -1,0 +1,34 @@
+Client server architecture:
+----------------------------
+Linux Server ( MQ is installed and running) – MQ Server:
+----------------------------------------------------------------
+1. Install MQ  Server software (We already aware how to install it). All instruction are provided in my IBM MQ Beginners course. Kindly refer it
+2. Create a queue manager, create a local queue inside the queue manager
+3. Create a server connection channel
+	DEFINE CHANNEL(SVR1) CHLTYPE(SVRCONN)
+	
+4. Create a listener and then start the listener
+5. Set the authorizations to the queue manager and queue
+		- OAM --> Object Authority Manager (If the client is having CONNECT access to the qmgr or not)
+			setmqaut -m QM1 -t qmgr -p dell +connect
+			dspmqaut -m QM1 -t qmgr -p dell
+		
+		- ACL --> Access Control List
+			setmqaut -m QM1 -n QL1 -t q -p dell +put
+			dspmqaut -m QM1 -n QL1 -t q -p dell
+
+Windows Server (application is running) – MQ Client:
+------------------------------------------------
+1. MQ Client software installation in windows
+2. Set an environment variable for MQSERVER parameter. Environment variable  means just to provide an instruction to the operating system
+	Syntax: SET MQSERVER=svr-chl-name/tcp/mq-hostname(port)
+	    Eg: SET MQSERVER=SVR1/tcp/192.168.136.128(1425)
+
+3. Now try to put and get the messages using amqsputc and amqsgetc programs
+
+Precautions:
+------------
+1. There must be no firewall issues and network issues between your windows client and MQ Server
+2. The MQ listener port should always open from MQ client (windows server) to MQ Server (Linux server)
+3. There must be proper authentication, authorization permissions should be set. Kindly refer my “Security in IBM MQ” section in this course for better understanding of authentication and authorization
+===============================================================================
