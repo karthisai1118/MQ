@@ -1,0 +1,25 @@
+SSL:
+-------
+MQSeriesGSKit Package must be there in order to enable SSL
+
+QM1: - /var/mqm/qmgrs/QM1/ssl
+-------
+Creating key store in cms
+-------------------------
+runmqakm -keydb -create -db qm1key.kdb -pw qm1@123 -type cms -stash
+
+creating selfsigned certificate
+-------------------------------
+runmqakm -cert -create -label ibmwebspheremqqm1 -db qm1key.kdb -dn "CN=QM1,OU=IBM" -expire 365 -size 1024 -format ascii
+
+extracting a public certificate
+--------------------------------
+runmqakm -cert -extract -label ibmwebspheremqqm1 -db qm1key.kdb  -target qm1pub.arm
+
+Adding qm2.arm in qm1 key repos 
+-----------------------------------
+runmqakm -cert -add -label qm2pub -file /var/mqm/qmgrs/QM2/ssl/qm2pub.arm -db /var/mqm/qmgrs/QM1/ssl/qm1key.kdb -pw qm1@123
+
+To list the certs in keystore
+-----------------------------------
+runmqakm -cert -list -db /var/mqm/qmgrs/QM1/ssl/qm1key.kdb
