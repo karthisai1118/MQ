@@ -1,0 +1,27 @@
+Uninstallation of IBM MQ in Redhat linux:
+--------------------------------------------
+1. Stop all the running queue managers --> Mandatory
+	endmqm qmgr-name 
+	
+2. Delete the queue manager --> Not mandatory 
+	dltmqm qmgr-name
+	
+3. Switch to root user --> su - root
+
+4. Uninstall MQ packages
+	i) Grep all the MQ rpm packages first
+		[root@mohan1 ~]# rpm -qa |grep -i mq
+		MQSeriesSDK-9.1.0-0.x86_64
+		MQSeriesServer-9.1.0-0.x86_64
+		MQSeriesRuntime-9.1.0-0.x86_64
+		MQSeriesSamples-9.1.0-0.x86_64
+		MQSeriesJRE-9.1.0-0.x86_64
+		MQSeriesJava-9.1.0-0.x86_64
+
+		
+	ii) Remove those MQ Packages 
+		rpm -ev MQSeriesSDK-9.1.0-0.x86_64 MQSeriesServer-9.1.0-0.x86_64 MQSeriesRuntime-9.1.0-0.x86_64 MQSeriesSamples-9.1.0-0.x86_64 MQSeriesJRE-9.1.0-0.x86_64 MQSeriesJava-9.1.0-0.x86_64
+
+5. Remove the MQ working path(/var/mqm) and MQ installation path(/opt/mqm)
+	go to /var and do rm -Rf mqm
+===========================================================================================================
