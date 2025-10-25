@@ -1,0 +1,18 @@
+Dead letter Queue:
+--------------------
+1. Identify the reason of the failure
+	a) Browse the the dead letter queue
+		cd /opt/mqm/samp/bin
+		   ./amqsbcg DQ2 QM2 --> MQ operating system level command
+		   
+	b) Idenfity the reason code --> 2053
+		mqrc 2053 -- Queue Full 
+
+
+2. Take the appropriate technical action 
+	ALTER QLOCAL(QL2) MAXDEPTH(50)
+
+3. Run the dead letter handler based on rules table
+	runmqdlq DQ2 QM2
+	REASON(2053) ACTION(RETRY) RETRY(3)
+=======================================================================================
