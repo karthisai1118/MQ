@@ -1,0 +1,14 @@
+recove the damaged Object
+-------------------------
+rcrmqobj -m QM10 -t queue QL10 
+======================================================================
+Qmgr backup and restore:
+------------------------
+To take backup of QM1 qmgr:
+----------------------
+dmpmqcfg -m QM1 -a > /var/tmp/qm1backup.txt
+
+To restore:
+-----------
+runmqsc QM1 < /var/tmp/qm1backup.txt
+============================================================================================
