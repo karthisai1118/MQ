@@ -1,0 +1,20 @@
+Migrating an IBM MQ Queue Manager (QMGR) from AIX to Linux involves installing the new MQ version on Linux, stopping the QMGR on AIX, backing up its data/logs, and then either a side-by-side migration (recommended for OS change) by creating a new QMGR on Linux with similar config using dmpmqcfg, or a more complex multi-stage move, carefully adjusting configuration files (qm.ini, channel/listener IPs, security) and testing thoroughly before cutting over applications. A side-by-side approach usually means installing the new MQ on Linux, using dmpmqcfg to export definitions, manually adapting them for Linux (IPs, security), creating the new QMGR with crtmqm, and then starting apps on Linux. 
+General Migration Steps (Side-by-Side)
+1. Prepare Linux: Install the same or newer version of IBM MQ on the Linux server, ideally in a different directory than the AIX installation.
+2. Stop AIX QMGR: Stop all applications using the QMGR on AIX, then stop the QMGR itself (endmqm) and the mqweb server if used.
+3. Backup AIX Data: Copy the QMGR data and log directories from AIX to the Linux server.
+4. Export & Modify Config:
+    1). On AIX, use dmpmqcfg to dump the queue manager's object definitions.
+    2). On Linux, edit the dumped configuration file to change AIX-specific settings like IP addresses, ports, user IDs, and file paths to Linux equivalents.
+5. Create Linux QMGR: Create a new queue manager on Linux using crtmqm with a similar name, then use runmqsc to load the modified configuration.
+6. Configure Security & Listeners: Manually set up security (setmqaut), listeners, and channels on the Linux QMGR, ensuring permissions and network settings are correct.
+7. Test: Start the new Linux QMGR and test applications and messaging thoroughly before switching production traffic.
+8. Switch Over: Point applications to the new Linux QMGR and decommission the old AIX instance.
+
+Key Considerations
+* Platform Differences: AIX and Linux have different file system structures, user/group management, and potentially different library paths (LD_LIBRARY_PATH), requiring careful configuration adjustments.
+* Version Compatibility: Ensure the Linux MQ version supports your AIX version (typically a newer version is used for migration).
+* Security: User IDs, group memberships, and authentication (like setmqaut) must be correctly recreated and adapted for Linux.
+* Tools: Consider tools like the MQ Migrator (if available for your version) for automated object migration, though manual checks are crucial. 
+
+https://www.ibm.com/docs/en/ibm-mq/9.3.x?topic=linux-migrating-queue-manager-aix
