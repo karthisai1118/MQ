@@ -1,0 +1,21 @@
+Methods to Install to a Custom Path
+* Using RPM --prefix:
+  Use the --prefix flag to specify your custom directory. The path must be empty or non-existent and cannot contain spaces.
+  rpm --prefix /custom/path -Uvh MQSeriesRuntime-*.rpm MQSeriesServer-*.rpm
+* Using crtmqpkg (Multiple Installations):
+  If you want to install a second version or a custom-pathed version alongside an existing one, use crtmqpkg to create unique installation packages.
+  ./crtmqpkg suffix /custom/path
+  After running this, navigate to the generated directory (usually in /var/tmp/mq_rpms/suffix/) and install those specific RPMs. 
+
+Setting the Primary Installation
+After installing to a custom path, you must manually set it as the primary installation if you want system-wide commands (like dspmqver) to point to it by default. 
+1. Check current primary:
+    MQ_INSTALLATION_PATH/bin/dspmqinst
+2. Unset existing primary (if any):
+    MQ_INSTALLATION_PATH/bin/setmqinst -x -p MQ_INSTALLATION_PATH
+3. Set your custom path as primary:
+   /custom/path/bin/setmqinst -i -p /custom/path
+Managing the Environment
+For specific terminal sessions, you can use the setmqenv command to point to your custom installation without making it the system-wide primary. 
+  . /custom/path/bin/setmqenv -s
+This sets necessary variables like $MQ_INSTALLATION_PATH for that shell instance. 
