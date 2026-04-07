@@ -1,0 +1,91 @@
+Key Responsibilities
+1. MQ Environment Assessment & Analysis
+•	Assess current-state MQ environments, including:
+o	Queue Managers
+o	Channels & Queues
+o	Security configurations
+o	System dependencies
+•	Identify migration scope across applications, platforms, versions, and environments (DEV / UAT / PROD)
+•	Analyze compatibility impacts, deprecated features, and enhancements in the target MQ version/platform
+________________________________________
+2. Discovery & Dependency Mapping
+•	Perform detailed application dependency mapping to understand:
+o	Message flows
+o	Interfacing systems
+•	Document all MQ objects and configurations required for migration
+•	Collaborate with application owners to capture:
+o	Message volume patterns
+o	SLA requirements
+o	Peak load characteristics
+________________________________________
+3. Migration Strategy Design & Coordination
+•	Work closely with MQ Architects to define migration approaches:
+o	In-place upgrade
+o	Parallel build
+o	Blue-Green deployment
+o	Cloud migration
+•	Ensure alignment with:
+o	Enterprise architecture standards
+o	Security policies
+o	DR/HA requirements
+•	Support design documentation for new MQ infrastructure:
+o	Distributed systems
+o	Containerized environments
+o	Cloud MQ setups
+________________________________________
+4. Risk, Impact & Change Management
+•	Conduct impact analysis for:
+o	Message formats
+o	Connectivity changes
+o	SSL/TLS certificates
+o	Access policies & routing paths
+•	Identify risks and dependencies; track mitigation plans
+•	Prepare and manage change control documentation
+________________________________________
+5. Testing & Validation Support
+•	Define test scenarios and acceptance criteria for MQ migration
+•	Coordinate end-to-end testing with application teams to validate:
+o	Connectivity
+o	Message delivery
+o	Throughput & performance
+o	System resilience
+•	Monitor MQ logs, error queues, and alerts during testing cycles
+________________________________________
+6. Migration Execution Support
+•	Assist engineering teams with:
+o	Cutover planning
+o	Rollback/fallback strategies
+o	Migration execution coordination
+•	Validate post-migration configurations:
+o	Queues
+o	Channels
+o	Listeners
+o	SSL/TLS setups
+•	Support defect triage and root-cause analysis
+________________________________________
+7. Stakeholder Communication & Management
+•	Facilitate:
+o	Migration workshops
+o	Readiness meetings
+o	Status checkpoint calls
+•	Communicate migration timelines, risks, and progress to stakeholders
+•	Ensure application teams are fully prepared for migration activities
+________________________________________
+8. Documentation & Governance
+•	Maintain detailed documentation:
+o	Migration runbooks
+o	Interface inventories
+o	Routing diagrams
+•	Ensure compliance with enterprise governance and audit standards
+•	Update CMDB, knowledge bases, and operational documents post-migration
+________________________________________
+Essential Skills
+•	Strong experience in IBM MQ architecture and administration
+•	Expertise in MQ migration strategies and planning
+•	Knowledge of:
+o	Queue managers, channels, clustering
+o	SSL/TLS and MQ security
+o	Message persistence and routing
+•	Experience with distributed, containerized, or cloud MQ environments
+•	Strong analytical, troubleshooting, and stakeholder communication skills
+
