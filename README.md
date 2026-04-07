@@ -5,7 +5,8 @@ I. what is MQ?
 
  MQ, or Message Queue, is a system for enabling applications to communicate reliably and asynchronously by temporarily storing messages in queues. IBM MQ is a prominent product in this category, providing a messaging middleware that connects applications across different platforms, ensures data security, and offers high availability for reliable message exchange even during network issues. It uses components like queue managers and queues to manage and transfer messages, making it a key technology for mission-critical systems in banking, healthcare, and manufacturing.  
 II. How MQ Works
-
+<img width="577" height="344" alt="image" src="https://github.com/user-attachments/assets/a1d492d3-aaa6-43a2-96d0-c7d5b25c1390" />
+IBM MQ works as asynchronous middleware, enabling applications to exchange data reliably without being online simultaneously. 
 a) Asynchronous Communication:
 Applications don't need to wait for a response in real-time. One application can send a message to a queue, and another can pick it up and process it when it's ready. 
 
